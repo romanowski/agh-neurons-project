@@ -11,7 +11,8 @@ public abstract class NetworkFactory {
 
     public abstract Network createNetwork(String confFile);
 
-    public static NetworkFactory getFactory(String factoryName) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+    public static NetworkFactory getFactory(String factoryName)
+            throws ClassNotFoundException, InstantiationException, IllegalAccessException {
         return (NetworkFactory) NetworkFactory.class.getClassLoader().loadClass(factoryName).newInstance();
     }
 }

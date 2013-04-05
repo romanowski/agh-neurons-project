@@ -8,9 +8,7 @@ public interface Network {
 
     public Layer outLayer();
 
-    public List<Layer> innerLayers();
-
-    public ActivationFunction activationFunction();
+    public List<Layer> layers();
 
     public List<Double> compute(List<Double> inputs);
 

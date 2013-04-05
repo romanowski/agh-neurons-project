@@ -1,0 +1,1 @@
+scala -cp classes edu.agh.neurons.scala.Main nets/$1.net results/$2.txt

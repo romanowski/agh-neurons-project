@@ -15,4 +15,5 @@ public interface Neuron {
 
     public double sigma();
 
+    public ActivationFunction activationFunction();
 }

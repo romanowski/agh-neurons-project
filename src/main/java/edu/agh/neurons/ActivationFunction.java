@@ -11,4 +11,6 @@ public interface ActivationFunction {
 
     public double activate(double in);
 
+    public String name();
+
 }
