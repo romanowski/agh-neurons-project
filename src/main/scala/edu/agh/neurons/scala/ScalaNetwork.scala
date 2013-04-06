@@ -18,7 +18,7 @@ case class ScalaNetwork(override val layers: java.util.List[Layer]) extends Netw
             if (values.size() != neuron.weights.size) {
               throw new IllegalArgumentException("weight vector size differ form inputs size")
             }
-            neuron.activationFunction.activate(values.zip(neuron.weights).map(el => el._1 * el._2).sum + neuron.sigma): java.lang.Double
+            neuron.activationFunction.activate(values.zip(neuron.weights).map(el => el._1 * el._2).sum + neuron.bias): java.lang.Double
         }
     }
   }

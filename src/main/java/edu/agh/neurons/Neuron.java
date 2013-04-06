@@ -13,7 +13,7 @@ public interface Neuron {
 
     public List<Double> weights();
 
-    public double sigma();
+    public double bias();
 
     public ActivationFunction activationFunction();
 }
