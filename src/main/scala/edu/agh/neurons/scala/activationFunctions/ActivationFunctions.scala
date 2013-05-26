@@ -1,7 +1,5 @@
 package edu.agh.neurons.scala.activationFunctions
 
-import edu.agh.neurons.ActivationFunction
-
 /**
  * Created with IntelliJ IDEA.
  * User: krzysiek

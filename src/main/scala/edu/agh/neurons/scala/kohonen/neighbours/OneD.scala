@@ -12,3 +12,16 @@ object OneD extends NeighbourBuilder {
     neurons
   }
 }
+
+
+
+object TwoD extends NeighbourBuilder {
+  def buildNeighbour(neurons: Seq[Neuron]) = {
+    neurons.zip(neurons.drop(1)).foreach {
+      case (prev, next) =>
+        prev.neighbours = prev.neighbours :+ next
+        next.neighbours = next.neighbours :+ prev
+    }
+    neurons
+  }
+}

@@ -1,9 +1,13 @@
 package edu.agh.neurons.scala.kohonen
 
 import scala.io.Source
-import neighbours.{OneD, NONE}
+import neighbours._
 import scala.util.Random
 import scala._
+import edu.agh.neurons.scala.kohonen.Params
+
+case class Params(toEpoch: Int, fMove: Double, nMove: Double)
+
 
 object Demo extends App {
 
@@ -11,16 +15,16 @@ object Demo extends App {
     Source.fromFile(args(0)).getLines().toList
 
 
-  val params = paramsStr.split(",").map {
+  val params = paramsStr.split(", +").map {
     entry => {
-      val from :: fMove :: nMove :: _ = entry.split(" ").toList
-      Params(from.toInt, fMove.toDouble, nMove.toDouble)
+      val to :: fMove :: nMove :: _ = entry.split(" +").toList
+      Params(to.toInt, fMove.toDouble, nMove.toDouble)
     }
   }
 
   val neighbour = neighbourStr match {
     case "1D" => OneD
-    case "2D" => NONE
+    case "2D" => TwoD
     case _ => NONE
   }
 
@@ -29,7 +33,7 @@ object Demo extends App {
     case _ => DistanceFuncs.Taxi _
   }
 
-  val genFunc: Int => Double = distanceFuncStr.split(" ").toList match {
+  val genFunc: Int => Double = genFuncStr.split(" ").toList match {
     case "RANDOM" :: from :: to :: _ =>
       _ => Random.nextDouble() * (to.toDouble - from.toDouble) + from.toDouble
     case _ => _ => 0
@@ -37,10 +41,13 @@ object Demo extends App {
   }
 
   val network = Initialaizers.initNetwork(genFunc, distanceFunc)(
-    amount = neighbourStr.toInt,
+    amount = neuronsSizeStr.toInt,
     inputs = inputSizeStr.toInt,
     nBuilder = neighbour
   )
+
+  println("init network")
+  println(network)
 
   println(Trainer.train(
     minError = minErrorStr.toDouble,
@@ -48,5 +55,6 @@ object Demo extends App {
     params = params
   )(network))
 
-
+  println("final network")
+  println(network)
 }

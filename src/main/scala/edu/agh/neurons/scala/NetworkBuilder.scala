@@ -1,23 +1,21 @@
 package edu.agh.neurons.scala
 
 import activationFunctions.ActivationFunctions
-import edu.agh.neurons.{NetworkFactory, Network}
 import io.Source
 import scala.collection.JavaConversions._
-import java.lang.{Double => JDouble}
 
-class NetworkBuilder extends NetworkFactory {
+class NetworkBuilder {
   def createNetwork(confFile: String): Network = {
     val split = " +"
     val layersLines = Source.fromFile(confFile).getLines().toList
-    ScalaNetwork(
+    Network(
       layersLines.map(_.split(split).toList).groupBy(_.head).map {
         case (layerNr, data) =>
-          layerNr -> ScalaLayer(data.sortBy(_.get(1).toInt).map {
+          layerNr -> Layer(data.sortBy(_.get(1).toInt).map {
             line => {
               val _ :: _ :: activationFunc :: sigma :: weights = line
-              ScalaNeuron(weights.map(_.toDouble: JDouble),
-                sigma.toDouble: JDouble,
+              Neuron(weights.map(_.toDouble),
+                sigma.toDouble,
                 ActivationFunctions.forName(activationFunc)
               )
             }

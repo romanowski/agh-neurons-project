@@ -7,7 +7,7 @@ package edu.agh.neurons.scala.kohonen
  * Time: 00:57
  * To change this template use File | Settings | File Templates.
  */
-case class Neuron(var weights: Seq[Double], var neighbours: Seq[Neuron]) {
+case class Neuron(var weights: Seq[Double], var neighbours: Seq[Neuron], index: Int) {
 
   def moveTo(dest: Seq[Double], by: Double) {
     require(dest.size == weights.size)
@@ -18,5 +18,9 @@ case class Neuron(var weights: Seq[Double], var neighbours: Seq[Neuron]) {
   }
 
 
+  override def toString = "Nwuron(%s) weights: %s".format(index, weights.mkString("[", ", ", "]")
+    //  neighbours.map(_.index).mkString(", ")
+  )
 
+  println(this)
 }

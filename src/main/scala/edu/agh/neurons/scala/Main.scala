@@ -17,7 +17,7 @@ object Main extends App {
   val net = (new NetworkBuilder).createNetwork(file)
   Source.fromFile(ans).getLines().foreach {
     line => {
-      val ans :: inputs = line.split(split).toList.map(_.toDouble: java.lang.Double)
+      val ans :: inputs = line.split(split).toList.map(_.toDouble)
       println("for: %s got %s expecting: %s".format(
         inputs.mkString("[", ", ", "]"),
         net.compute(inputs),

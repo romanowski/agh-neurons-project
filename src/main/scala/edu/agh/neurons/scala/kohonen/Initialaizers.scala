@@ -12,7 +12,11 @@ import neighbours.NeighbourBuilder
 object Initialaizers {
 
   def initNetwork(genFun: Int => Double, distFunc: KohonenNetwork.DistFun)(amount: Int, inputs: Int, nBuilder: NeighbourBuilder) = {
-    KohonenNetwork(distFunc, nBuilder.buildNeighbour((1 to amount).map(_ => Neuron((1 to inputs).map(genFun), Nil))))
+    KohonenNetwork(distFunc,
+      nBuilder.buildNeighbour((1 to amount)
+        .map(index =>
+        Neuron((1 to inputs).map(genFun), Nil, index))
+      ))
   }
 
 }

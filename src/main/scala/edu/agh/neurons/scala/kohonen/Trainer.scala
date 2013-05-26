@@ -10,8 +10,6 @@ package edu.agh.neurons.scala.kohonen
 
 import KohonenNetwork._
 
-case class Params(toEpoch: Int, fMove: Double, nMove: Double)
-
 object Trainer {
 
   def train(minError: Double,
@@ -28,6 +26,7 @@ object Trainer {
 
     val epochNr = sortedParams.foldLeft(0) {
       case (epochNr, params) =>
+        println("tainging with params:" + params)
         (epochNr to params.toEpoch).dropWhile {
           _ => epoch(params) > minError
         }.headOption.getOrElse(params.toEpoch)
