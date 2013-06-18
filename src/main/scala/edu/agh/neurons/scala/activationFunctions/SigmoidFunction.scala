@@ -6,4 +6,6 @@ object SigmoidFunction extends ActivationFunction {
     2 / (1 + math.pow(math.E, - in)) - 1
 
   def name(): String = "sigm"
+
+  def d(in: Double): Double = 2 * (1 - activate(in)) * activate(in)
 }

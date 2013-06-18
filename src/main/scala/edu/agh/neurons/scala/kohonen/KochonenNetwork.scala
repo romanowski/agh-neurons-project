@@ -19,8 +19,8 @@ import KohonenNetwork._
 case class KohonenNetwork(distFunc: DistFun, neurons: Seq[Neuron]) {
   assert(neurons.size > 0)
 
-  def findBest(to: Point): Neuron = {
-    neurons.minBy(distFunc(to))
+  def findBest(to: Point, notTo: Set[Int] = Set()): Neuron = {
+    neurons.filterNot(notTo contains _.index).minBy(distFunc(to))
   }
 
   def getDistance(p: Point): Point =
@@ -36,11 +36,18 @@ case class KohonenNetwork(distFunc: DistFun, neurons: Seq[Neuron]) {
     }
   }
 
+  var last = Set[Int]()
 
   def findBestAndAdjust(fMove: Double, nMove: Double)(point: Point) = {
-    val best = findBest(point)
+    val best = findBest(point, last)
+    last = last + best.index
+    if (last.size == neurons.size)
+      last = Set();
+
     best.moveTo(point, fMove)
     best.neighbours.foreach(_.moveTo(point, nMove))
+    val dist = neurons.map(distFunc(point))
+    println(dist + (best.index - 1).toString)
     best
   }
 

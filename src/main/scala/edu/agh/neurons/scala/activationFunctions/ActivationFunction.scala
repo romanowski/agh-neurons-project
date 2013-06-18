@@ -10,5 +10,7 @@ package edu.agh.neurons.scala.activationFunctions
 trait ActivationFunction {
   def activate(in: Double): Double
 
+  def d(in: Double): Double
+
   def name(): String
 }
