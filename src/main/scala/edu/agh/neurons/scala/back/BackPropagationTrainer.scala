@@ -19,12 +19,16 @@ case class BackPropagationTrainer(var net: BackPropagationNetwork, learnSpeed: D
 
   def onPoint(input: Seq[Double], out: Seq[Double]): Double = {
 
-    println(net)
+    //println(net)
 
 
-    val errors = ouputErrors(input, out)
+    val computed = net.compute(input)
 
-    println(errors)
+    val errors = ouputErrors(computed, out)
+
+    println(errors, out)
+
+
 
     val backErrors = net.layers.reverse.foldLeft(Seq(errors)) {
       (prev, layer) =>
@@ -37,7 +41,7 @@ case class BackPropagationTrainer(var net: BackPropagationNetwork, learnSpeed: D
 
     }.reverse
 
-    println(backErrors)
+    //println(backErrors)
 
     net.layers.zip(backErrors).foldLeft((List[Layer](), input)) {
       case ((list, input), (layer, errors)) =>
@@ -54,21 +58,25 @@ case class BackPropagationTrainer(var net: BackPropagationNetwork, learnSpeed: D
     overallError(errors)
   }
 
-  def ouputErrors(in: Seq[Double], out: Seq[Double]): Seq[Double] = out.zip(net.compute(in)).map(e => math.abs(e._1 - e._2))
+  def ouputErrors(in: Seq[Double], out: Seq[Double]): Seq[Double] =
+    out.zip(in).map(e => e._1 - e._2)
 
   def error(in: Seq[Double], out: Seq[Double]): Double = overallError(ouputErrors(in, out))
 
-  def onDataSet(dataSet: DataSet): Double =
+  def onDataSet(dataSet: DataSet): Double = {
+    println("Epoch")
     overallError(dataSet.map(onPoint))
+  }
+
 
   def upToMinErr(dataSet: DataSet)(minErr: Double, maxIter: Int): Double =
     (1 to maxIter - 1)
-      .toStream.map(_ => onDataSet(dataSet)).takeWhile(_ > minErr)
+      .toStream.map(_ => onDataSet(dataSet)).dropWhile(_ > minErr)
       .headOption.getOrElse(onDataSet(dataSet))
 
 
   def computeDelta(func: ActivationFunction)(err: Double)(input: Double): Double =
     learnSpeed * err * func.d(input)
 
-  def overallError(errs: Seq[Double]) = errs.max
+  def overallError(errs: Seq[Double]) = errs.map(math.abs).max
 }

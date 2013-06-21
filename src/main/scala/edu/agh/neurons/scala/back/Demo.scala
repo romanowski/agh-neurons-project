@@ -1,7 +1,7 @@
 package edu.agh.neurons.scala.back
 
 import io.Source
-import edu.agh.neurons.scala.activationFunctions.LineFunction
+import edu.agh.neurons.scala.activationFunctions.{SigmoidFunction, LineFunction}
 
 /**
  * Created with IntelliJ IDEA.
@@ -22,7 +22,7 @@ object Demo extends App {
       in -> out
   }
 
-  val net = BackPropagationNetwork.build(sizes, LineFunction)
+  val net = BackPropagationNetwork.build(sizes, SigmoidFunction)
 
   val err = BackPropagationTrainer(net, learnSpeedStr.toDouble).upToMinErr(points)(errSr.toDouble, iterSr.toInt)
 
